@@ -1,6 +1,8 @@
 package com.project.aircheck.data.services
 
 import com.project.aircheck.BuildConfig
+import com.project.aircheck.data.models.tmcoordinates.TmCoordinatesResponse
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
@@ -12,6 +14,6 @@ interface KakaoLocalApiService {
     suspend fun getTmCoordinates(
         @Query("x") longitude: Double,
         @Query("y") latitude: Double
-    )
+    ): Response<TmCoordinatesResponse>
 
 }

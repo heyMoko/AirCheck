@@ -10,9 +10,11 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationTokenSource
+import com.project.aircheck.data.Repository
 import com.project.aircheck.databinding.ActivityMainBinding
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -50,14 +52,7 @@ class MainActivity : AppCompatActivity() {
         if (!locationPermissionGranted) {
             finish()
         } else {
-            cancellationTokenSource = CancellationTokenSource()
-
-            fusedLocationProviderClient.getCurrentLocation(
-                LocationRequest.PRIORITY_HIGH_ACCURACY,
-                cancellationTokenSource!!.token
-            ).addOnSuccessListener { location ->
-                binding.textView.text = "${location.latitude}, ${location.longitude}"
-            }
+            fetchAirQualityData()
         }
     }
 
@@ -74,6 +69,26 @@ class MainActivity : AppCompatActivity() {
             ),
             REQUEST_ACCESS_LOCATION_PERMISSIONS
         )
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun fetchAirQualityData() {
+        cancellationTokenSource = CancellationTokenSource()
+
+        fusedLocationProviderClient.getCurrentLocation(
+            LocationRequest.PRIORITY_HIGH_ACCURACY,
+            cancellationTokenSource!!.token
+        ).addOnSuccessListener { location ->
+            scope.launch {
+                val monitoringStation =
+                    Repository.getNearbyMonitoringStation(
+                        location.latitude,
+                        location.longitude
+                    )
+
+                binding.textView.text = monitoringStation?.stationName
+            }
+        }
     }
 
     companion object {
