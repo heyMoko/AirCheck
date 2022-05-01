@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Header(
     @SerializedName("resultCode")
-    val resultCode: String?,
+    val resultCode: String? = null,
     @SerializedName("resultMsg")
-    val resultMsg: String?
+    val resultMsg: String? = null
 )

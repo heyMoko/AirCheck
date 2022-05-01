@@ -5,11 +5,11 @@ import com.google.gson.annotations.SerializedName
 
 data class Body(
     @SerializedName("items")
-    val measuredValues: List<MeasuredValue>?,
+    val measuredValues: List<MeasuredValue>? = null,
     @SerializedName("numOfRows")
-    val numOfRows: Int?,
+    val numOfRows: Int? = null,
     @SerializedName("pageNo")
-    val pageNo: Int?,
+    val pageNo: Int? = null,
     @SerializedName("totalCount")
-    val totalCount: Int?
+    val totalCount: Int? = null
 )
